@@ -3,7 +3,7 @@
 * Version v0.1.0, 8-MAR-2019
 * Software decoder for FM broadcast radio with AirSpy
 * For MacOS and Linux
-* This repository is forked from [airspyhf-fmradion](https://github.com/jj1bdx/airspyhf-fmradion) 0.2.7
+* This repository is forked from [airspy-fmradion](https://github.com/jj1bdx/airspy-fmradion) 0.2.7
 
 ## Usage
 
@@ -59,7 +59,7 @@ To install the library from a Debian/Ubuntu installation just do:
 
 ### macOS
 
-* Install HomeBrew `airspy`
+* Install HomeBrew `airspyhf`
 
 ## Installing
 
