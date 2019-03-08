@@ -41,7 +41,7 @@
 
 #include "AirspyHFSource.h"
 
-#define AIRSPYHF_FMRADION_VERSION "v0.0.1"
+#define AIRSPYHF_FMRADION_VERSION "v0.1.0"
 
 /** Flag is set on SIGINT / SIGTERM. */
 static std::atomic_bool stop_flag(false);
