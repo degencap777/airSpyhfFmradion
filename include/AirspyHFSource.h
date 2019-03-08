@@ -16,25 +16,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef INCLUDE_AIRSPYSOURCE_H_
-#define INCLUDE_AIRSPYSOURCE_H_
+#ifndef INCLUDE_AIRSPYHFSOURCE_H_
+#define INCLUDE_AIRSPYHFSOURCE_H_
 
-#include "libairspy/airspy.h"
+#include "libairspyhf/airspyhf.h"
 #include <cstdint>
 #include <string>
 #include <vector>
 
 #include "Source.h"
 
-#define AIRSPY_MAX_DEVICE (32)
+#define AIRSPYHF_MAX_DEVICE (32)
 
-class AirspySource : public Source {
+class AirspyHFSource : public Source {
 public:
   /** Open Airspy device. */
-  AirspySource(int dev_index);
+  AirspyHFSource(int dev_index);
 
   /** Close Airspy device. */
-  virtual ~AirspySource();
+  virtual ~AirspyHFSource();
 
   virtual bool configure(std::string configuration);
 
@@ -58,46 +58,26 @@ public:
 
 private:
   /**
-   * Configure Airspy tuner and prepare for streaming.
+   * Configure Airspy HF tuner and prepare for streaming.
    *
    * sampleRateIndex :: desired sample rate index in the sample rates
    * enumeration list. frequency       :: desired center frequency in Hz.
-   * bias_ant        :: antenna bias
-   * lna_gain        :: desired LNA gain: 0 to 14 dB.
-   * mix_gain        :: desired mixer gain: 0 to 15 dB.
-   * vga_gain        :: desired VGA gain: 0 to 15 dB
-   * lna_agc         :: LNA AGC
-   * mix_agc         :: Mixer AGC
    *
    * Return true for success, false if an error occurred.
    */
-  bool configure(int sampleRateIndex, uint32_t frequency, bool bias_ant,
-                 int lna_gain, int mix_gain, int vga_gain, bool lna_agc,
-                 bool mix_agc);
+  bool configure(int sampleRateIndex, uint32_t frequency);
 
   void callback(const float *buf, int len);
-  static int rx_callback(airspy_transfer_t *transfer);
-  static void run(airspy_device *dev, std::atomic_bool *stop_flag);
+  static int rx_callback(airspyhf_transfer_t *transfer);
+  static void run(airspyhf_device *dev, std::atomic_bool *stop_flag);
 
-  struct airspy_device *m_dev;
+  struct airspyhf_device *m_dev;
   uint32_t m_sampleRate;
   uint32_t m_frequency;
-  int m_lnaGain;
-  int m_mixGain;
-  int m_vgaGain;
-  bool m_biasAnt;
-  bool m_lnaAGC;
-  bool m_mixAGC;
   bool m_running;
   std::thread *m_thread;
-  static AirspySource *m_this;
-  static const std::vector<int> m_lgains;
-  static const std::vector<int> m_mgains;
-  static const std::vector<int> m_vgains;
+  static AirspyHFSource *m_this;
   std::vector<int> m_srates;
-  std::string m_lgainsStr;
-  std::string m_mgainsStr;
-  std::string m_vgainsStr;
   std::string m_sratesStr;
 };
 

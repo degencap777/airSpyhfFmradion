@@ -39,9 +39,9 @@
 #include "SoftFM.h"
 #include "util.h"
 
-#include "AirspySource.h"
+#include "AirspyHFSource.h"
 
-#define AIRSPY_FMRADION_VERSION "v0.2.7"
+#define AIRSPYHF_FMRADION_VERSION "v0.0.1"
 
 /** Flag is set on SIGINT / SIGTERM. */
 static std::atomic_bool stop_flag(false);
@@ -119,22 +119,14 @@ void usage() {
       "                 (-X is ignored under mono mode (-M))\n"
       "  -U             Set deemphasis to 75 microseconds (default: 50)\n"
       "\n"
-      "Configuration options for Airspy devices:\n"
+      "Configuration options for Airspy HF devices:\n"
       "  freq=<int>     Frequency of radio station in Hz (default 100000000)\n"
       "                 valid values: 24M to 1.8G\n"
-      "  srate=<int>    IF sample rate in Hz. Depends on Airspy firmware and "
+      "  srate=<int>    IF sample rate in Hz. Depends on Airspy HF firmware "
+      "and "
       "libairspy support\n"
-      "                 Airspy firmware and library must support dynamic "
+      "                 Airspy HF firmware and library must support dynamic "
       "sample rate query. (default 10000000)\n"
-      "  lgain=<int>    LNA gain in dB. 'list' to just get a list of valid "
-      "values: (default 8)\n"
-      "  mgain=<int>    Mixer gain in dB. 'list' to just get a list of valid "
-      "values: (default 8)\n"
-      "  vgain=<int>    VGA gain in dB. 'list' to just get a list of valid "
-      "values: (default 8)\n"
-      "  antbias        Enable antemma bias (default disabled)\n"
-      "  lagc           Enable LNA AGC (default disabled)\n"
-      "  magc           Enable mixer AGC (default disabled)\n"
       "\n");
 }
 
@@ -171,7 +163,7 @@ double get_time() {
 static bool get_device(std::vector<std::string> &devnames, Source **srcsdr,
                        int devidx) {
 
-  AirspySource::get_device_names(devnames);
+  AirspyHFSource::get_device_names(devnames);
 
   if (devidx < 0 || (unsigned int)devidx >= devnames.size()) {
     if (devidx != -1) {
@@ -189,8 +181,8 @@ static bool get_device(std::vector<std::string> &devnames, Source **srcsdr,
 
   fprintf(stderr, "using device %d: %s\n", devidx, devnames[devidx].c_str());
 
-  // Open Airspy device.
-  *srcsdr = new AirspySource(devidx);
+  // Open Airspy HF device.
+  *srcsdr = new AirspyHFSource(devidx);
 
   return true;
 }
@@ -230,8 +222,8 @@ int main(int argc, char **argv) {
   std::vector<std::string> devnames;
   Source *srcsdr = 0;
 
-  fprintf(stderr, "airspy-fmradion " AIRSPY_FMRADION_VERSION "\n");
-  fprintf(stderr, "Software decoder for FM broadcast radio with Airspy\n");
+  fprintf(stderr, "airspyhf-fmradion " AIRSPYHF_FMRADION_VERSION "\n");
+  fprintf(stderr, "Software decoder for FM broadcast radio with Airspy HF\n");
 
   const struct option longopts[] = {
       {"config", 2, NULL, 'c'}, {"dev", 1, NULL, 'd'},
@@ -409,44 +401,24 @@ int main(int argc, char **argv) {
   }
 
   double ifrate = srcsdr->get_sample_rate();
+  fprintf(stderr, "ifrate = %f\n", ifrate);
+
   unsigned int first_downsample;
   std::vector<IQSample::value_type> first_coeff;
   unsigned int second_downsample;
   std::vector<IQSample::value_type> second_coeff;
 
-  if (ifrate == 10000000.0) {
+  if (ifrate == 768000.0) {
     // decimation rate: 32 = 8 * 4
     // 312.5kHz = +-156.25kHz
     first_downsample = 8;
     first_coeff = FilterParameters::jj1bdx_10000khz_div8;
     second_downsample = 4;
     second_coeff = FilterParameters::jj1bdx_1250khz_div4;
-  } else if (ifrate == 2500000.0) {
-    // decimation rate: 8 = 4 * 2
-    // 312.5kHz = +-156.25kHz
-    first_downsample = 4;
-    first_coeff = FilterParameters::jj1bdx_2500khz_div4;
-    second_downsample = 2;
-    second_coeff = FilterParameters::jj1bdx_600khz_625khz_div2;
-#if 0
-  } else if (ifrate == 6000000.0) {
-    // decimation rate: 20 = 5 * 4
-    // 300kHz = +-150kHz
-    first_downsample = 5;
-    second_downsample = 4;
-  } else if (ifrate == 3000000.0) {
-    // decimation rate: 10 = 5 * 2
-    // 300kHz = +-150kHz
-    first_downsample = 5;
-    second_downsample = 2;
-#endif
   } else {
     fprintf(stderr, "Sample rate unsupported\n");
     fprintf(stderr, "Supported rate:\n");
-    fprintf(stderr, "Airspy R2: 2500000, 10000000\n");
-#if 0
-    fprintf(stderr, "Airspy Mini: 3000000, 6000000\n");
-#endif
+    fprintf(stderr, "Airspy HF: 768000\n");
     delete srcsdr;
     exit(1);
   }
