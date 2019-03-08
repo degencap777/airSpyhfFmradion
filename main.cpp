@@ -401,7 +401,6 @@ int main(int argc, char **argv) {
   }
 
   double ifrate = srcsdr->get_sample_rate();
-  fprintf(stderr, "ifrate = %f\n", ifrate);
 
   unsigned int first_downsample;
   std::vector<IQSample::value_type> first_coeff;
