@@ -41,7 +41,7 @@
 
 #include "AirspyHFSource.h"
 
-#define AIRSPYHF_FMRADION_VERSION "v0.1.0"
+#define AIRSPYHF_FMRADION_VERSION "v0.1.1-dev"
 
 /** Flag is set on SIGINT / SIGTERM. */
 static std::atomic_bool stop_flag(false);
@@ -429,11 +429,11 @@ int main(int argc, char **argv) {
           ifrate / first_downsample, first_downsample);
   fprintf(stderr, "Audio 1st rate:    %.0f Hz (divided by %u)\n",
           ifrate / first_downsample / first_fmaudio_downsample,
-	  first_fmaudio_downsample);
+          first_fmaudio_downsample);
   fprintf(stderr, "Audio 2nd rate:    %.0f Hz (divided by %u)\n",
           ifrate / first_downsample / first_fmaudio_downsample /
-	  second_fmaudio_downsample,
-	  second_fmaudio_downsample);
+              second_fmaudio_downsample,
+          second_fmaudio_downsample);
 
   double delta_if = tuner_freq - freq;
   MovingAverage<float> ppm_average(1000, 0.0f);
