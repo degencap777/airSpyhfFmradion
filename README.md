@@ -110,6 +110,8 @@ Compile and install
 
 * FM demodulation rate: 384kHz
 * 48 * 16 = 768, so all filters are in integer sampling rates
+* CPU usage: ~9% on Mac mini 2018 / macOS 10.14.3
+* CPU usage: ~60% on Intel NUC DN2820FYKH Celeron N2830 / Ubuntu 18.04 (usable range with 2 cores)
 
 ## Airspy HF configuration options
 
