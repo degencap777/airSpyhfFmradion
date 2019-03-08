@@ -58,8 +58,8 @@ AirspyHFSource::AirspyHFSource(int dev_index)
     sampleRates = new uint32_t[nbSampleRates];
     airspyhf_get_samplerates(m_dev, sampleRates, nbSampleRates);
 #ifdef DEBUG_AIRSPYHFSOURCE
-    fprintf(stderr, "nbSampleRates = %d\n", nbSampleRates);
-    fprintf(stderr, "nbSampleRates[0] = %d\n", sampleRates[0]);
+    std::cerr << "nbSampleRates = " << nbSampleRates << std::endl;
+    std::cerr << "nbSampleRates[0] = " << sampleRates[0] << std::endl;
 #endif
 
     if (nbSampleRates == 0) {
@@ -190,8 +190,10 @@ bool AirspyHFSource::configure(std::string configurationStr) {
   std::string::iterator begin = configurationStr.begin();
   std::string::iterator end = configurationStr.end();
 
-  int sampleRateIndex = -1;
+  int sampleRateIndex = 0;
   uint32_t frequency = 100000000;
+
+  m_sampleRate = 768000;
 
   parsekv::key_value_sequence<std::string::iterator> p;
   parsekv::pairs_type m;
@@ -234,7 +236,7 @@ bool AirspyHFSource::configure(std::string configurationStr) {
 #endif
       frequency = atoi(m["freq"].c_str());
 
-      if ((frequency < 24000000) || (frequency > 1800000000)) {
+      if ((frequency < 60000000) || (frequency > 260000000)) {
         m_error = "Invalid frequency";
         return false;
       }

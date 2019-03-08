@@ -422,6 +422,7 @@ int main(int argc, char **argv) {
   std::vector<SampleVector::value_type> second_fmaudio_coeff =
       FilterParameters::jj1bdx_96k_div2_fmaudio;
   unsigned int first_fmaudio_downsample = 4;
+  unsigned int second_fmaudio_downsample = 2;
 
   fprintf(stderr, "IF sample rate:    %.0f Hz\n", ifrate);
   fprintf(stderr, "1st rate:          %.0f Hz (divided by %u)\n",
@@ -460,15 +461,16 @@ int main(int argc, char **argv) {
   fprintf(stderr, "deemphasis:        %.1f microseconds\n", deemphasis);
 
   // Prepare decoder.
-  FmDecoder fm(ifrate,                   // sample_rate_if
-               first_downsample,         // first_downsample
-               first_coeff,              // first_coeff
-               first_fmaudio_coeff,      // first_fmaudio_coeff
-               first_fmaudio_downsample, // first_fmaudio_downsample
-               second_fmaudio_coeff,     // second_fmaudio_coeff
-               stereo,                   // stereo
-               deemphasis,               // deemphasis,
-               pilot_shift);             // pilot_shift
+  FmDecoder fm(ifrate,                    // sample_rate_if
+               first_downsample,          // first_downsample
+               first_coeff,               // first_coeff
+               first_fmaudio_coeff,       // first_fmaudio_coeff
+               first_fmaudio_downsample,  // first_fmaudio_downsample
+               second_fmaudio_coeff,      // second_fmaudio_coeff
+               second_fmaudio_downsample, // second_fmaudio_downsample
+               stereo,                    // stereo
+               deemphasis,                // deemphasis,
+               pilot_shift);              // pilot_shift
 
   // If buffering enabled, start background output thread.
   DataBuffer<Sample> output_buffer;

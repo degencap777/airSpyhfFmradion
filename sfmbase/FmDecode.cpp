@@ -298,7 +298,8 @@ FmDecoder::FmDecoder(
     const std::vector<SampleVector::value_type> &first_fmaudio_coeff,
     unsigned int first_fmaudio_downsample,
     const std::vector<SampleVector::value_type> &second_fmaudio_coeff,
-    bool stereo, double deemphasis, bool pilot_shift)
+    unsigned int second_fmaudio_downsample, bool stereo, double deemphasis,
+    bool pilot_shift)
 
     // Initialize member fields
     : m_sample_rate_if(sample_rate_if),
@@ -332,25 +333,21 @@ FmDecoder::FmDecoder(
 
       // Construct DownsampleFilter for mono channel
       ,
-      m_first_resample_mono(first_fmaudio_coeff,      // coeff
-                            first_fmaudio_downsample, // downsample
-                            true),                    // integer_factor
-      m_second_resample_mono(
-          second_fmaudio_coeff, // coeff
-                                // downsample
-          (m_sample_rate_fmdemod / first_fmaudio_downsample) / sample_rate_pcm,
-          false) // integer_factor
+      m_first_resample_mono(first_fmaudio_coeff,        // coeff
+                            first_fmaudio_downsample,   // downsample
+                            true),                      // integer_factor
+      m_second_resample_mono(second_fmaudio_coeff,      // coeff
+                             second_fmaudio_downsample, // downsample
+                             true)                      // integer_factor
 
       // Construct DownsampleFilter for stereo channel
       ,
-      m_first_resample_stereo(first_fmaudio_coeff,      // coeff
-                              first_fmaudio_downsample, // downsample
-                              true),                    // integer_factor
-      m_second_resample_stereo(
-          second_fmaudio_coeff, // coeff
-                                // downsample
-          (m_sample_rate_fmdemod / first_fmaudio_downsample) / sample_rate_pcm,
-          false) // integer_factor
+      m_first_resample_stereo(first_fmaudio_coeff,        // coeff
+                              first_fmaudio_downsample,   // downsample
+                              true),                      // integer_factor
+      m_second_resample_stereo(second_fmaudio_coeff,      // coeff
+                               second_fmaudio_downsample, // downsample
+                               true)                      // integer_factor
 
       // Construct HighPassFilterIir
       ,
@@ -365,7 +362,9 @@ FmDecoder::FmDecoder(
           (deemphasis == 0) ? 1.0 : (deemphasis * sample_rate_pcm * 1.0e-6))
 
 {
-  // do nothing
+  assert((sample_rate_if / (first_downsample * first_fmaudio_downsample *
+                            second_fmaudio_downsample)) ==
+         (double)sample_rate_pcm);
 }
 
 void FmDecoder::process(const IQSampleVector &samples_in, SampleVector &audio) {

@@ -147,10 +147,12 @@ public:
    * first_downsample :: Integer first stage downsampling rate (>= 1)
    *                     (applied BEFORE FM demodulation)
    * first_coeff      :: First stage filter coefficients
-   * first_fmaudio_coeff      :: First stage output audio filter coefficients
-   * first_fmaudio_downsample :: Integer first stage downsampling rate
-   *                             for fmaudio (>= 1)
-   * second_fmaudio_coeff     :: First stage output audio filter coefficients
+   * first_fmaudio_coeff       :: First stage output audio filter coefficients
+   * first_fmaudio_downsample  :: Integer first stage downsampling rate
+   *                              for fmaudio (>= 1)
+   * second_fmaudio_coeff      :: Second stage output audio filter coefficients
+   * second_fmaudio_downsample :: Integer second stage downsampling rate
+   *                              for fmaudio (>= 1)
    * stereo           :: True to enable stereo decoding.
    * deemphasis       :: Time constant of de-emphasis filter in microseconds
    *                     (50 us for broadcast FM, 0 to disable de-emphasis).
@@ -163,7 +165,8 @@ public:
             const std::vector<SampleVector::value_type> &first_fmaudio_coeff,
             unsigned int first_fmaudio_downsample,
             const std::vector<SampleVector::value_type> &second_fmaudio_coeff,
-            bool stereo, double deemphasis, bool pilot_shift);
+            unsigned int second_fmaudio_downsample, bool stereo,
+            double deemphasis, bool pilot_shift);
 
   /**
    * Process IQ samples and return audio samples.
