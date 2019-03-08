@@ -1,5 +1,5 @@
-// airspy-fmradion
-// Software decoder for FM broadcast radio with Airspy
+// airspyhf-fmradion
+// Software decoder for FM broadcast radio with Airspy HF
 //
 // Copyright (C) 2015 Edouard Griffiths, F4EXB
 //

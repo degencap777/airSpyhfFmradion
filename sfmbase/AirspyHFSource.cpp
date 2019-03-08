@@ -1,7 +1,8 @@
 // airspyhf-fmradion
-// Software decoder for FM broadcast radio with Airspy
+// Software decoder for FM broadcast radio with Airspy HF
 //
 // Copyright (C) 2015 Edouard Griffiths, F4EXB
+// Copyright (C) 2019 Kenji Rikitake, JJ1BDX
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,7 +28,7 @@
 #include "parsekv.h"
 #include "util.h"
 
-#define DEBUG_AIRSPYHFSOURCE 1
+// #define DEBUG_AIRSPYHFSOURCE 1
 
 AirspyHFSource *AirspyHFSource::m_this = 0;
 
@@ -121,8 +122,8 @@ void AirspyHFSource::get_device_names(std::vector<std::string> &devices) {
           airspyhf_ptr, &read_partid_serialno);
 
       if (rc == AIRSPYHF_SUCCESS) {
-        serial_msb = read_partid_serialno.serial_no[2];
-        serial_lsb = read_partid_serialno.serial_no[3];
+        serial_msb = read_partid_serialno.serial_no[0];
+        serial_lsb = read_partid_serialno.serial_no[1];
         std::ostringstream devname_ostr;
         devname_ostr << "Serial " << std::hex << std::setw(8)
                      << std::setfill('0') << serial_msb << serial_lsb;

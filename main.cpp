@@ -425,8 +425,15 @@ int main(int argc, char **argv) {
   unsigned int second_fmaudio_downsample = 2;
 
   fprintf(stderr, "IF sample rate:    %.0f Hz\n", ifrate);
-  fprintf(stderr, "1st rate:          %.0f Hz (divided by %u)\n",
+  fprintf(stderr, "FM demod rate:     %.0f Hz (divided by %u)\n",
           ifrate / first_downsample, first_downsample);
+  fprintf(stderr, "Audio 1st rate:    %.0f Hz (divided by %u)\n",
+          ifrate / first_downsample / first_fmaudio_downsample,
+	  first_fmaudio_downsample);
+  fprintf(stderr, "Audio 2nd rate:    %.0f Hz (divided by %u)\n",
+          ifrate / first_downsample / first_fmaudio_downsample /
+	  second_fmaudio_downsample,
+	  second_fmaudio_downsample);
 
   double delta_if = tuner_freq - freq;
   MovingAverage<float> ppm_average(1000, 0.0f);

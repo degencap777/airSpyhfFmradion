@@ -1,4 +1,4 @@
-// airspy-fmradion
+// airspyhf-fmradion
 // Software decoder for FM broadcast radio with Airspy
 //
 // Copyright (C) 2019 Kenji Rikitake, JJ1BDX
