@@ -409,12 +409,10 @@ int main(int argc, char **argv) {
   std::vector<IQSample::value_type> second_coeff;
 
   if (ifrate == 768000.0) {
-    // decimation rate: 32 = 8 * 4
-    // 312.5kHz = +-156.25kHz
-    first_downsample = 8;
-    first_coeff = FilterParameters::jj1bdx_10000khz_div8;
-    second_downsample = 4;
-    second_coeff = FilterParameters::jj1bdx_1250khz_div4;
+    first_downsample = 2;
+    first_coeff = FilterParameters::delay_3taps_only_iq;
+    second_downsample = 2;
+    second_coeff = FilterParameters::delay_3taps_only_iq;
   } else {
     fprintf(stderr, "Sample rate unsupported\n");
     fprintf(stderr, "Supported rate:\n");
@@ -424,10 +422,10 @@ int main(int argc, char **argv) {
   }
 
   std::vector<SampleVector::value_type> first_fmaudio_coeff =
-      FilterParameters::jj1bdx_312_5khz_div6;
+      FilterParameters::delay_3taps_only_audio;
   std::vector<SampleVector::value_type> second_fmaudio_coeff =
-      FilterParameters::jj1bdx_58_0333khz_fmaudio;
-  unsigned int first_fmaudio_downsample = 6;
+      FilterParameters::delay_3taps_only_audio;
+  unsigned int first_fmaudio_downsample = 4;
 
   fprintf(stderr, "IF sample rate:    %.0f Hz\n", ifrate);
   fprintf(stderr, "1st rate:          %.0f Hz (divided by %u)\n",

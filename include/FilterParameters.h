@@ -28,6 +28,10 @@
 
 class FilterParameters {
 public:
+  static const std::vector<IQSample::value_type> delay_3taps_only_iq;
+
+  static const std::vector<SampleVector::value_type> delay_3taps_only_audio;
+
   static const std::vector<IQSample::value_type> lambdaprog_10000khz_div8;
   static const std::vector<IQSample::value_type> lambdaprog_1250khz_div4;
   static const std::vector<IQSample::value_type> jj1bdx_10000khz_div8;
@@ -41,6 +45,12 @@ public:
 };
 
 // Values of vectors
+
+const std::vector<IQSample::value_type>
+    FilterParameters::delay_3taps_only_iq = {0.0, 1.0, 0.0};
+
+const std::vector<SampleVector::value_type>
+    FilterParameters::delay_3taps_only_audio = {0.0, 1.0, 0.0};
 
 const std::vector<IQSample::value_type>
     FilterParameters::lambdaprog_10000khz_div8 = {
