@@ -147,9 +147,6 @@ public:
    * first_downsample :: Integer first stage downsampling rate (>= 1)
    *                     (applied BEFORE FM demodulation)
    * first_coeff      :: First stage filter coefficients
-   * second_downsample:: Integer second stage downsampling rate (>= 1)
-   *                     (applied BEFORE FM demodulation)
-   * second_coeff     :: Second stage filter coefficients
    * first_fmaudio_coeff      :: First stage output audio filter coefficients
    * first_fmaudio_downsample :: Integer first stage downsampling rate
    *                             for fmaudio (>= 1)
@@ -163,8 +160,6 @@ public:
    */
   FmDecoder(double sample_rate_if, unsigned int first_downsample,
             const std::vector<IQSample::value_type> &first_coeff,
-            unsigned int second_downsample,
-            const std::vector<IQSample::value_type> &second_coeff,
             const std::vector<SampleVector::value_type> &first_fmaudio_coeff,
             unsigned int first_fmaudio_downsample,
             const std::vector<SampleVector::value_type> &second_fmaudio_coeff,
@@ -221,10 +216,8 @@ private:
 
   // Data members.
   const double m_sample_rate_if;
-  const double m_sample_rate_firstout;
   const double m_sample_rate_fmdemod;
   const unsigned int m_first_downsample;
-  const unsigned int m_second_downsample;
   const bool m_pilot_shift;
   const bool m_stereo_enabled;
   bool m_stereo_detected;
@@ -244,7 +237,6 @@ private:
   SampleVector m_buf_stereo;
 
   LowPassFilterFirIQ m_iffilter_first;
-  LowPassFilterFirIQ m_iffilter_second;
   EqParameters m_eqparams;
   DiscriminatorEqualizer m_disceq;
   PhaseDiscriminator m_phasedisc;

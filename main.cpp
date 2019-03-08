@@ -405,14 +405,10 @@ int main(int argc, char **argv) {
 
   unsigned int first_downsample;
   std::vector<IQSample::value_type> first_coeff;
-  unsigned int second_downsample;
-  std::vector<IQSample::value_type> second_coeff;
 
   if (ifrate == 768000.0) {
     first_downsample = 2;
     first_coeff = FilterParameters::jj1bdx_768kHz_div2;
-    second_downsample = 1;
-    second_coeff = FilterParameters::delay_3taps_only_iq;
   } else {
     fprintf(stderr, "Sample rate unsupported\n");
     fprintf(stderr, "Supported rate:\n");
@@ -430,8 +426,6 @@ int main(int argc, char **argv) {
   fprintf(stderr, "IF sample rate:    %.0f Hz\n", ifrate);
   fprintf(stderr, "1st rate:          %.0f Hz (divided by %u)\n",
           ifrate / first_downsample, first_downsample);
-  fprintf(stderr, "2nd rate:          %.0f Hz (divided by %u)\n",
-          ifrate / first_downsample / second_downsample, second_downsample);
 
   double delta_if = tuner_freq - freq;
   MovingAverage<float> ppm_average(1000, 0.0f);
@@ -469,8 +463,6 @@ int main(int argc, char **argv) {
   FmDecoder fm(ifrate,                   // sample_rate_if
                first_downsample,         // first_downsample
                first_coeff,              // first_coeff
-               second_downsample,        // second_downsample
-               second_coeff,             // second_coeff
                first_fmaudio_coeff,      // first_fmaudio_coeff
                first_fmaudio_downsample, // first_fmaudio_downsample
                second_fmaudio_coeff,     // second_fmaudio_coeff

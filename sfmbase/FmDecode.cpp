@@ -295,8 +295,6 @@ void PilotPhaseLock::process(const SampleVector &samples_in,
 FmDecoder::FmDecoder(
     double sample_rate_if, unsigned int first_downsample,
     const std::vector<IQSample::value_type> &first_coeff,
-    unsigned int second_downsample,
-    const std::vector<IQSample::value_type> &second_coeff,
     const std::vector<SampleVector::value_type> &first_fmaudio_coeff,
     unsigned int first_fmaudio_downsample,
     const std::vector<SampleVector::value_type> &second_fmaudio_coeff,
@@ -304,17 +302,14 @@ FmDecoder::FmDecoder(
 
     // Initialize member fields
     : m_sample_rate_if(sample_rate_if),
-      m_sample_rate_firstout(m_sample_rate_if / first_downsample),
-      m_sample_rate_fmdemod(m_sample_rate_firstout / second_downsample),
-      m_first_downsample(first_downsample),
-      m_second_downsample(second_downsample), m_pilot_shift(pilot_shift),
+      m_sample_rate_fmdemod(m_sample_rate_if / first_downsample),
+      m_first_downsample(first_downsample), m_pilot_shift(pilot_shift),
       m_stereo_enabled(stereo), m_stereo_detected(false), m_if_level(0),
       m_baseband_mean(0), m_baseband_level(0)
 
       // Construct LowPassFilterFirIQ
       ,
-      m_iffilter_first(first_coeff, m_first_downsample),
-      m_iffilter_second(second_coeff, m_second_downsample)
+      m_iffilter_first(first_coeff, m_first_downsample)
 
       // Construct EqParams
       ,
@@ -381,10 +376,7 @@ void FmDecoder::process(const IQSampleVector &samples_in, SampleVector &audio) {
 
   // First stage of the low pass filters to isolate station,
   // and perform first stage decimation.
-  m_iffilter_first.process(samples_in, m_buf_iffirstout);
-
-  // Second stage of the low pass filters to isolate station,
-  m_iffilter_second.process(m_buf_iffirstout, m_buf_iffiltered);
+  m_iffilter_first.process(samples_in, m_buf_iffiltered);
 
   // Measure IF level.
   double if_rms = rms_level_approx(m_buf_iffiltered);
