@@ -434,7 +434,6 @@ int main(int argc, char **argv) {
               second_fmaudio_downsample,
           second_fmaudio_downsample);
 
-  double delta_if = tuner_freq - freq;
   MovingAverage<float> ppm_average(100, 0.0f);
 
   srcsdr->print_specific_parms();
@@ -527,7 +526,7 @@ int main(int argc, char **argv) {
 
     // the minus factor is to show the ppm correction
     // to make and not the one made
-    ppm_average.feed(((fm.get_tuning_offset() + delta_if) / tuner_freq) *
+    ppm_average.feed((fm.get_tuning_offset() / tuner_freq) *
                      -1.0e6);
     double ppm_value_average = ppm_average.average();
     double if_level_db = 20 * log10(fm.get_if_level());
