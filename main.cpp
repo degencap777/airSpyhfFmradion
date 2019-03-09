@@ -41,7 +41,7 @@
 
 #include "AirspyHFSource.h"
 
-#define AIRSPYHF_FMRADION_VERSION "v0.1.1-dev"
+#define AIRSPYHF_FMRADION_VERSION "v0.1.1"
 
 /** Flag is set on SIGINT / SIGTERM. */
 static std::atomic_bool stop_flag(false);
@@ -526,8 +526,7 @@ int main(int argc, char **argv) {
 
     // the minus factor is to show the ppm correction
     // to make and not the one made
-    ppm_average.feed((fm.get_tuning_offset() / tuner_freq) *
-                     -1.0e6);
+    ppm_average.feed((fm.get_tuning_offset() / tuner_freq) * -1.0e6);
     double ppm_value_average = ppm_average.average();
     double if_level_db = 20 * log10(fm.get_if_level());
     double baseband_level_db = 20 * log10(fm.get_baseband_level()) + 3.01;

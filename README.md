@@ -1,6 +1,6 @@
 # airspyhf-fmradion
 
-* Version v0.1.0, 8-MAR-2019
+* Version v0.1.1, 9-MAR-2019
 * Software decoder for FM broadcast radio with AirSpy
 * For MacOS and Linux
 * This repository is forked from [airspy-fmradion](https://github.com/jj1bdx/airspy-fmradion) 0.2.7
@@ -78,7 +78,7 @@ the location of the library in one the following ways:
 
 Compile and install
 
- - `make -j8` (for machines with 8 CPUs)
+ - `make -j4` (for machines with 4 cores)
  - `make install`
 
 ## Basic command options
@@ -108,6 +108,7 @@ Compile and install
 
 ### The following conversion process units are implemented
 
+* IF center frequency is down Fs/4 than the station frequency, i.e: when the station is 76.5MHz, the tuned frequency is 76.308MHz
 * FM demodulation rate: 384kHz
 * 48 * 16 = 768, so all filters are in integer sampling rates
 * CPU usage: ~9% on Mac mini 2018 / macOS 10.14.3
@@ -121,8 +122,8 @@ Compile and install
 ## Authors
 
 * Joris van Rantwijk
-* Edouard Griffiths, F4EXB
-* Kenji Rikitake, JJ1BDX
+* Edouard Griffiths, F4EXB (no longer involving in maintaining NGSoftFM)
+* Kenji Rikitake, JJ1BDX (maintainer)
 
 ## Acknowledgments
 
