@@ -356,9 +356,14 @@ FmDecoder::FmDecoder(
     // Initialize member fields
     : m_sample_rate_if(sample_rate_if),
       m_sample_rate_fmdemod(m_sample_rate_if / first_downsample),
+      m_downsample_shift(sample_rate_if / 4),
       m_first_downsample(first_downsample), m_pilot_shift(pilot_shift),
       m_stereo_enabled(stereo), m_stereo_detected(false), m_if_level(0),
       m_baseband_mean(0), m_baseband_level(0)
+
+      // Construct FourthDownconverterIQ
+      ,
+      m_downconverter()
 
       // Construct LowPassFilterFirIQ
       ,
@@ -421,13 +426,14 @@ FmDecoder::FmDecoder(
 
 void FmDecoder::process(const IQSampleVector &samples_in, SampleVector &audio) {
 
-  // Fine tuning is not needed
-  // so long as the stability of the receiver device is
-  // within the range of +- 1ppm (~100Hz or less).
+  // Fs/4 downconvering is required
+  // to avoid frequency zero offset
+  // because Airspy HF+ is a Zero IF receiver
+  m_downconverter.process(samples_in, m_buf_iftuned);
 
   // First stage of the low pass filters to isolate station,
   // and perform first stage decimation.
-  m_iffilter_first.process(samples_in, m_buf_iffiltered);
+  m_iffilter_first.process(m_buf_iftuned, m_buf_iffiltered);
 
   // Measure IF level.
   double if_rms = rms_level_approx(m_buf_iffiltered);

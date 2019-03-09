@@ -194,7 +194,10 @@ public:
   bool stereo_detected() const { return m_stereo_detected; }
 
   /** Return actual frequency offset in Hz with respect to receiver LO. */
-  double get_tuning_offset() const { return m_baseband_mean * freq_dev; }
+  double get_tuning_offset() const { return (m_baseband_mean * freq_dev); }
+
+  /** Return frequency offset of downsampling in Hz. */
+  double get_downsample_shift() const { return m_downsample_shift; }
 
   /** Return RMS IF level (where full scale IQ signal is 1.0). */
   double get_if_level() const { return m_if_level; }
@@ -232,6 +235,7 @@ private:
   // Data members.
   const double m_sample_rate_if;
   const double m_sample_rate_fmdemod;
+  const double m_downsample_shift;
   const unsigned int m_first_downsample;
   const bool m_pilot_shift;
   const bool m_stereo_enabled;
@@ -251,6 +255,7 @@ private:
   SampleVector m_buf_stereo_firstout;
   SampleVector m_buf_stereo;
 
+  FourthDownconverterIQ m_downconverter;
   LowPassFilterFirIQ m_iffilter_first;
   EqParameters m_eqparams;
   DiscriminatorEqualizer m_disceq;
