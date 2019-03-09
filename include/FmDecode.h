@@ -27,6 +27,18 @@
 #include "Filter.h"
 #include "SoftFM.h"
 
+// Downconverting Fs/4 tuner.
+class FourthDownconverterIQ {
+public:
+  // Construct Fs/4 downconverting tuner.
+  FourthDownconverterIQ();
+  // Process samples.
+  void process(const IQSampleVector &samples_in, IQSampleVector &samples_out);
+
+private:
+  unsigned int m_index;
+};
+
 /* Detect frequency by phase discrimination between successive samples. */
 class PhaseDiscriminator {
 public:
