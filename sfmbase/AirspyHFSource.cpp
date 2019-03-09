@@ -245,8 +245,8 @@ bool AirspyHFSource::configure(std::string configurationStr) {
   }
 
   m_confFreq = frequency;
-  // tuner_freq shift no longer required
-  double tuner_freq = frequency;
+  // tuned frequency is up Fs/4 (downconverted in FmDecode)
+  double tuner_freq = frequency - 0.25 * m_srates[sampleRateIndex];
   return configure(sampleRateIndex, tuner_freq);
 }
 
