@@ -435,7 +435,7 @@ int main(int argc, char **argv) {
           second_fmaudio_downsample);
 
   double delta_if = tuner_freq - freq;
-  MovingAverage<float> ppm_average(1000, 0.0f);
+  MovingAverage<float> ppm_average(100, 0.0f);
 
   srcsdr->print_specific_parms();
 
@@ -557,7 +557,7 @@ int main(int argc, char **argv) {
         }
       }
       // Show per-block statistics.
-      if (stereo_change || ((block % 10) == 0)) {
+      if (stereo_change || ((block % 5) == 0)) {
         fprintf(stderr,
                 "\rblk=%7d:ppm=%+6.2f:IF=%+5.1fdB:"
                 "BB=%+5.1fdB:AF=%+5.1fdB:buf=%.1fs",
