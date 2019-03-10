@@ -529,7 +529,6 @@ int main(int argc, char **argv) {
     ppm_average.feed((fm.get_tuning_offset() / tuner_freq) * -1.0e6);
     double ppm_value_average = ppm_average.average();
     double if_level_db = 20 * log10(fm.get_if_level());
-    double baseband_level_db = 20 * log10(fm.get_baseband_level()) + 3.01;
     double audio_level_db = 20 * log10(audio_level) + 3.01;
 
     double buflen_sec;
@@ -557,9 +556,8 @@ int main(int argc, char **argv) {
       // Show per-block statistics.
       if (stereo_change || ((block % 5) == 0)) {
         fprintf(stderr,
-                "\rblk=%7d:ppm=%+6.2f:IF=%+5.1fdB:"
-                "BB=%+5.1fdB:AF=%+5.1fdB:buf=%.1fs",
-                block, ppm_value_average, if_level_db, baseband_level_db,
+                "\rblk=%7d:ppm=%+6.2f:IF=%+5.1fdB:AF=%+5.1fdB:buf=%.1fs",
+                block, ppm_value_average, if_level_db,
                 audio_level_db, buflen_sec);
         fflush(stderr);
       }
