@@ -29,10 +29,7 @@ double rms_level_approx(const IQSampleVector &samples) {
 
   IQSample::value_type level = 0;
   for (unsigned int i = 0; i < n; i++) {
-    const IQSample &s = samples[i];
-    IQSample::value_type re = s.real(), im = s.imag();
-    IQSample::value_type sqsum = re * re + im * im;
-    level += sqsum;
+    level += std::norm(samples[i]);
   }
   // Return RMS level
   return sqrt(level / n);
@@ -55,9 +52,9 @@ inline void FourthDownconverterIQ::process(const IQSampleVector &samples_in,
 
   for (unsigned int i = 0; i < n; i++) {
     IQSample y;
-    IQSample s = samples_in[i];
-    IQSample::value_type re = s.real();
-    IQSample::value_type im = s.imag();
+    const IQSample &s = samples_in[i];
+    const IQSample::value_type re = s.real();
+    const IQSample::value_type im = s.imag();
     switch (tblidx) {
     case 0:
       // multiply +1
@@ -260,7 +257,7 @@ void PilotPhaseLock::process(const SampleVector &samples_in,
     }
 
     // Multiply locked tone with input.
-    Sample x = samples_in[i];
+    const Sample &x = samples_in[i];
     Sample phasor_i = psin * x;
     Sample phasor_q = pcos * x;
 
