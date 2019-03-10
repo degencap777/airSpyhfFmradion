@@ -36,7 +36,7 @@ inline void samples_mean_rms(const SampleVector &samples, double &mean,
 
   unsigned int n = samples.size();
   for (unsigned int i = 0; i < n; i++) {
-    Sample v = samples[i];
+    const Sample &v = samples[i];
     vsum += v;
     vsumsq += v * v;
   }
