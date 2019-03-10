@@ -1,6 +1,6 @@
 # airspyhf-fmradion
 
-* Version v0.1.1, 9-MAR-2019
+* Version v0.1.2, 10-MAR-2019
 * Software decoder for FM broadcast radio with AirSpy
 * For MacOS and Linux
 * This repository is forked from [airspy-fmradion](https://github.com/jj1bdx/airspy-fmradion) 0.2.7
@@ -106,13 +106,20 @@ Compile and install
 
 * Adaptive IF filtering (unable to obtain better results)
 
-### The following conversion process units are implemented
+### Conversion process
 
 * IF center frequency is down Fs/4 than the station frequency, i.e: when the station is 76.5MHz, the tuned frequency is 76.308MHz
+* Airspy FM allows only 660kHz alias-free BW, so the maximum alias-free BW for IF is (660/2)kHz - 192kHz = 138kHz
 * FM demodulation rate: 384kHz
 * 48 * 16 = 768, so all filters are in integer sampling rates
 * CPU usage: ~9% on Mac mini 2018 / macOS 10.14.3
 * CPU usage: ~60% on Intel NUC DN2820FYKH Celeron N2830 / Ubuntu 18.04 (usable range with 2 cores)
+
+### Filter characteristics
+
+* IF first stage (768kHz -> 384kHz) : <-0.01dB: 80kHz, -3dB: 100kHz, -90dB: 135kHz
+* Audio first stage (384kHz -> 96kHz) : <-0.01dB: 19kHz, -3dB: 28.6kHz, -90dB: 47.2kHz
+* Audio second stage (96kHz -> 48kHz) : <-0.01dB: 15kHz, -3dB: 16.4kHz, -90dB: 18.8kHz
 
 ## Airspy HF configuration options
 
