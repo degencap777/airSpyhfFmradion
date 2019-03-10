@@ -41,17 +41,10 @@
 
 #include "AirspyHFSource.h"
 
-#define AIRSPYHF_FMRADION_VERSION "v0.1.2"
+#define AIRSPYHF_FMRADION_VERSION "v0.1.3-dev"
 
 /** Flag is set on SIGINT / SIGTERM. */
 static std::atomic_bool stop_flag(false);
-
-/** Simple linear gain adjustment. */
-void adjust_gain(SampleVector &samples, double gain) {
-  for (unsigned int i = 0, n = samples.size(); i < n; i++) {
-    samples[i] *= gain;
-  }
-}
 
 /**
  * Get data from output buffer and write to output stream.
@@ -520,9 +513,6 @@ int main(int argc, char **argv) {
     double audio_mean, audio_rms;
     samples_mean_rms(audiosamples, audio_mean, audio_rms);
     audio_level = 0.95 * audio_level + 0.05 * audio_rms;
-
-    // SKIPPED: Set nominal audio volume
-    // adjust_gain(audiosamples, 0.5)
 
     // the minus factor is to show the ppm correction
     // to make and not the one made
