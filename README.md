@@ -60,6 +60,14 @@ To install the library from a Debian/Ubuntu installation just do:
 ### macOS
 
 * Install HomeBrew `airspyhf`
+* See <https://github.com/pothosware/homebrew-pothos/wiki>
+
+```shell
+brew tap pothosware/homebrew-pothos
+brew tap dholm/homebrew-sdr #other sdr apps
+brew update
+brew install airspyhf --HEAD
+```
 
 ## Installing
 
