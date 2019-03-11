@@ -1,5 +1,7 @@
 # airspyhf-fmradion
 
+*This repository is archived.* See [airspy-fmradion](https://github.com/jj1bdx/airspy-fmradion) for the further development.
+
 * Version v0.1.2, 10-MAR-2019
 * Software decoder for FM broadcast radio with AirSpy
 * For MacOS and Linux
